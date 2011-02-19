@@ -1,8 +1,8 @@
 # What is this?
-This is a package for the Concrete5 CMS ( http://concrete5.org ) that replaces the built-in functionality of that "Edit" menu item with a lightweight javascript image editor which allows you to crop and resize the image without having to load the external "Piknik" service.
+This is a package for the Concrete5 CMS ( http://concrete5.org ) which replaces the built-in functionality of the "Edit" menu item with a lightweight javascript image editor which allows you to crop and resize the image without having to load the external "Piknik" service.
 
 #Why?
-I don't like how choosing "Edit" from the popup menu when you click on an image in the file manager tries to connect you to the Piknik online service (and I say "tries" because I've never actually gotten it to work for me, although plenty of other people swear they have so it must just be me). Even if it did work, I still don't need such heavyweight functionality on my website. But being able to quickly and easily crop images after uploading them would be *very* useful to me -- both to myself and to non-technical users who sometimes don't understand that uploading an image directly from your camera without resizing it first results in HUGE file sizes and slow page loads. With this image editor, it becomes feasible to instruct my clients (the people managing the sites I build) to "click Edit, type 600 into the box, crop if you want, then click save".
+I don't like how choosing "Edit" from the popup menu when you click on an image in the file manager tries to connect you to the Piknik online service (and I say "tries" because I've never actually gotten it to work for me, although plenty of other people swear they have so it must just be me). Even if it did work, I still don't need such heavyweight functionality on my website. But being able to quickly and easily crop images after uploading them would be *very* useful to me -- both to myself and to non-technical users who sometimes don't understand that uploading an image directly from your camera without resizing it first results in HUGE file sizes and slow page loads. With this image editor, it becomes feasible to instruct my clients (the people managing the sites I build) to "click Edit, type 600 into the Width box, crop if you want, then click save".
 
 # How To Install
 1. Click the "Downloads" button up above (way up near the top of this page, over to the right).
@@ -64,6 +64,7 @@ The ImageEditor object is directly responsible for the display of the image in t
 * Refactor lock/auto icons event handlers in `js/ui.js` so it's one element with swapping image (and swapping hover imgs). Hafta merge icon click events as well and look to width_locked() or height_locked() to see which one is "current" based on visibility of textfield, etc.
 * Add a help icon that pops up instructions in a lightbox (or something like that)
 * Maybe move editing controls to BELOW the image -- the save button makes more sense down there, and the whole interace might make more sense that way if users are familiar with iPhoto.
+* Browser testing! (Developed in Firefox/Mac, so that's the only one I know works for now)
 
 Not as important...
 
