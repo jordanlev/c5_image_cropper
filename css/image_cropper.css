@@ -1,0 +1,120 @@
+/* Styles for the image editing dialog */
+#image_cropper_controls_container {
+	width: 95%;
+	height: 10%;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+#image_cropper_controls_container * {
+	position: absolute;
+}
+
+#image_cropper_zoom_label {
+	left: 5px;
+	width: 25px;
+	top: 4px;
+}
+	
+#image_cropper_zoom {
+	left: 55px;
+	width: 65px;
+	top: 4px;
+}
+
+#image_cropper_width_container,
+#image_cropper_height_container,
+#image_cropper_save_container {
+	border: 1px solid #ddd;
+	top: 0;
+	height: 25px;
+}
+
+#image_cropper_width_container {
+	left: 147px;
+	width: 167px;
+}
+
+#image_cropper_height_container {
+	left: 340px;
+	width: 167px;
+}
+
+#image_cropper_save_container {
+	left: 535px;
+	width: 191px;
+}
+
+#image_cropper_width_container *,
+#image_cropper_height_container * {
+	top: 4px;
+}
+
+#image_cropper_width_label,
+#image_cropper_height_label {
+	left: 5px;
+	width: 80px;
+	font-weight: bold;
+}
+
+#image_cropper_width_input,
+#image_cropper_height_input {
+	left: 87px;
+	width: 30px;
+	top: 1px;
+}
+
+#image_cropper_width_display,
+#image_cropper_height_display {
+	left: 89px;
+	width: 45px;
+}
+
+#image_cropper_width_units,
+#image_cropper_height_units {
+	left: 126px;
+	width: 10px;
+}
+
+#image_cropper_width_lock,
+#image_cropper_width_auto,
+#image_cropper_height_lock,
+#image_cropper_height_auto {
+	left: 145px;
+	width: 16px;
+	top: 4px;
+	cursor: pointer;
+}
+
+#image_cropper_overwrite {
+	left: 10px;
+	width: 15px;
+	top: 1px;
+}
+#image_cropper_overwrite_label {
+	left: 32px;
+	width: 30px;
+	top: 4px;
+}
+
+#image_cropper_save {
+	left: 100px;
+	width: 50px;
+	top: 3px;
+}
+
+#image_cropper_save_warning {
+	left: 166px;
+	width: 16px;
+	top: 4px;
+}
+	
+#image_cropper_image_container {
+	width: 95%;
+	height: 90%;
+	overflow: scroll;
+	margin-left: auto;
+	margin-right: auto;
+	border: 2px solid #ccc;
+	background-image: url(../images/crosshatch.png);
+}
