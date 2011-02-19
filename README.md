@@ -1,11 +1,11 @@
 # What is this?
-This is a package for the Concrete5 CMS (http://concrete5.org) that replaces the built-in functionality of that "Edit" menu item with a lightweight javascript image editor which allows you to crop and resize the image without having to load the external "Piknik" service.
+This is a package for the Concrete5 CMS ( http://concrete5.org ) that replaces the built-in functionality of that "Edit" menu item with a lightweight javascript image editor which allows you to crop and resize the image without having to load the external "Piknik" service.
 
 #Why?
 I don't like how choosing "Edit" from the popup menu when you click on an image in the file manager tries to connect you to the Piknik online service (and I say "tries" because I've never actually gotten it to work for me, although plenty of other people swear they have so it must just be me). Even if it did work, I still don't need such heavyweight functionality on my website. But being able to quickly and easily crop images after uploading them would be *very* useful to me -- both to myself and to non-technical users who sometimes don't understand that uploading an image directly from your camera without resizing it first results in HUGE file sizes and slow page loads. With this image editor, it becomes feasible to instruct my clients (the people managing the sites I build) to "click Edit, type 600 into the box, crop if you want, then click save".
 
 # How To Install
-1. Click the "Downloads" button up above.
+1. Click the "Downloads" button up above (way up near the top of this page, over to the right).
 2. Click "Download .zip".
 3. Unzip the downloaded file.
 4. Rename the unzipped folder to "image_cropper"
@@ -13,6 +13,8 @@ I don't like how choosing "Edit" from the popup menu when you click on an image 
 6. Log into your site, go to Dashboard -> Add Functionality, then click the "Install" button next to "Image Cropper".
 
 # Usage Instructions (for site editors)
+[NOTE: THIS PACKAGE IS CURRENTLY IN DEVELOPMENT -- SAVING FUNCTIONALITY HAS NOT YET BEEN IMPLEMENTED! YOU CAN TEST THIS OUT AND SEE HOW THE INTERFACE WORKS BUT YOU WILL NOT BE ABLE TO SAVE YOUR CROPPED OR RESIZED IMAGES YET!]
+
 To bring up the image editor, click on an image thumbnail from the file manager (or from add/edit dialog of any block which allows for image selection), then choose "Edit" from the popup menu.
 
 I've tried to keep the interface as simple as possible. Towards that end, I have combined a lot of functionality into a few controls -- hopefully in a way that becomes clear once you start using it.
@@ -44,7 +46,7 @@ There are three different things that the code needs to do:
 
 The three files `controller.php`, `js/ccm.filemanager.js`, and `tools/files/edit.php` are responsible for the first task. They all involve fairly simple modifications to core concrete5 behavior (see comments at the top of those files for a little more detail), and require no further mention.
 
-The image editor utilizes the Jcrop jquery plugin (http://deepliquid.com/content/Jcrop.html) for the crop selection interface. Two versions of the Jcrop plugin are included (both in the `js` directory) -- one minified and one not. This package currently loads the un-minified version to make debugging easier, but in production you may want to load the minified version instead (although it probably won't make much of a difference).
+The image editor utilizes the Jcrop jquery plugin ( http://deepliquid.com/content/Jcrop.html ) for the crop selection interface. Two versions of the Jcrop plugin are included (both in the `js` directory) -- one minified and one not. This package currently loads the un-minified version to make debugging easier, but in production you may want to load the minified version instead (although it probably won't make much of a difference).
 
 The `elements/files/edit/image.php` file contains the actual html that is loaded into the editor popup window. The `js/ui.js` file contains all of the UI event handlers for that editor window. The `js/image_editor.js` file is a wrapper around the Jcrop plugin AND handles all of the resizing calculations (because the Jcrop plugin only deals with crop area). It also provides a nice clean API to the UI event handlers.
 
