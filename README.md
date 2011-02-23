@@ -48,15 +48,13 @@ The three files `controller.php`, `js/ccm.filemanager.js`, and `tools/files/edit
 
 The image editor utilizes the Jcrop jquery plugin ( http://deepliquid.com/content/Jcrop.html ) for the crop selection interface. Two versions of the Jcrop plugin are included (both in the `js` directory) -- one minified and one not. This package currently loads the un-minified version to make debugging easier, but in production you may want to load the minified version instead (although it probably won't make much of a difference).
 
-The `elements/files/edit/image.php` file contains the actual html that is loaded into the editor popup window. The `js/ui.js` file contains all of the UI event handlers for that editor window. The `js/image_editor.js` file is a wrapper around the Jcrop plugin AND handles all of the resizing calculations (because the Jcrop plugin only deals with crop area). It also provides a nice clean API to the UI event handlers.
+The `elements/files/edit/image.php` file contains the actual html that is loaded into the editor popup window. The `js/ui.js` file contains all of the UI event handlers for that editor window. The `js/image_editor.js` file is a wrapper around the Jcrop plugin AND handles all of the resizing calculations (because the Jcrop plugin only deals with crop area). It also provides a nice clean API to the UI event handlers. The `tools/crop.php` file performs the actual cropping/resizing on the image and copies the image in the file manager (or creates a new file version if "overwrite" was selected).
 
-So the basic chain of command is that the editor window opens, loads the `elements/files/edit/image.php` file which displays the image editor UI and instantiates the ImageEditor object from `js/image_editor.js` (which subsequentally instantiates the Jcrop plugin from `js/jquery.Jcrop.js`), then loads the `ui.js` file which contains the front-end code connecting all of the UI elements to the ImageEditor object (which in turn handles all of our resizing calculations and talks to the Jcrop plugin for us).
+So the basic chain of command is that the editor window opens, loads the `elements/files/edit/image.php` file which displays the image editor UI and instantiates the ImageEditor object from `js/image_editor.js` (which subsequentally instantiates the Jcrop plugin from `js/jquery.Jcrop.js`), then loads the `ui.js` file which contains the front-end code connecting all of the UI elements to the ImageEditor object (which in turn handles all of our resizing calculations and talks to the Jcrop plugin for us). When the user clicks the "Save" button, an ajax POST is sent to `tools/crop.php`, which performs the necessary operations and returns the new file id (or an error message).
 
 The ImageEditor object is directly responsible for the display of the image in the window (including zooming and crop area selection), while the front-end code is directly responsible for the display and input of all other controls in the window. The front-end code never interacts with the displayed image directly -- rather, it asks the ImageEditor object to do things which in turn may or may not affect the displayed image or crop selection area. Similarly, the ImageEditor object never interacts with the other controls in the window directly -- rather, it responds to function calls made by the front-end code (or it calls an event handler in the front-end code) which in turn may or may not affect the value of the controls.
 
 #TODO
-* Implement saving! (Both as a copy and overwrite)
-* NOTE: When you do save a copy, append the new size and whether it's cropped (e.g. img0323423.jpg -> img0323423_542x287_cropped.jpg)
 * In `$('#image_cropper_width_input').change(function() { ... });` handler (in `js/ui.js`), change the alert message so it uses new `ImageEditor.max_allowable_locked_dimension('width')` function to offer useful details to user. Also figure out what suggestions to give (increate/decrease crop area? width or height? increase/decrease other number?). When you figure it out, copy the change down to height handler as well.
 * Fix the thing where clicking on the icon immediately shows the other hover (so wait until first OUT event after switching to put the :hover state on it)
 * Add yellow fade hilite to display number when it's changed by a locked dimension change
@@ -66,6 +64,7 @@ The ImageEditor object is directly responsible for the display of the image in t
 * Maybe move editing controls to BELOW the image -- the save button makes more sense down there, and the whole interace might make more sense that way if users are familiar with iPhoto.
 * Browser testing! (Developed in Firefox/Mac, so that's the only one I know works for now)
 * Figure out how to make $.getScript() work properly from elements/files/edit/image.php so we don't have to load all of the js on every page load in controller.php!
+* Fix bug where calling $fileVersion->getFile() in tools/crop.php's set_ocid() function fails if no crop and no resize is selected by user.
 
 Not as important...
 
@@ -76,3 +75,4 @@ Not as important...
 * Maybe add a feature where a dashboard setting indicates the default locked width or height when editor is first opened (so designer could set this to column width of their templates before handing off to client?). !NOTE: only apply the default if it's SMALLER than the original image dimension.
 * Improve efficiency during file save by writing the cropped/resized image to a temp location, then importing that back into the c5 filesystem (then delete temp file) -- currently we copy the file and then overwrite it with the cropped/resized image (so if we're operating on a very large file, it may be more resource-intensive than it needs to be)
 * Re-label "overwrite" checkbox to something less drastic (because we create a new file version, so larger version could be retrieved).
+* Make file renaming more clever in tools/crop.php so if you resize an image that already has "_400x200" appended to its name, you don't wind up with "_400x200_350x125".

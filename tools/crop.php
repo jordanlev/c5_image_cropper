@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
@@ -30,17 +30,21 @@ if (isset($_POST['fID'])) {
 		$error = t('Invalid file.');
 	} else if (!$fp->canAddFileType($f->getExtension())) {
 		$error = t('You do not have permission to perform this action.');
-	} else if ($is_overwrite) {
-		$new_fv = $fi->import($f->getPath(), false, $f); //Pass the original file object to create a new version of the same file
 	} else {
-		$new_fv = $fi->import($f->getPath(), false); //Don't pass original file object so a brand new file will be created
+		//Save the new copy with a suffix that differentiates it from the original (e.g. myphoto.jpg -> myphoto_400x200.jpg)
+		$suffix = "_{$_POST['crop_w']}x{$_POST['crop_h']}";
+		$extension_with_dot = '.' . $f->getExtension();
+		$new_file_name = basename($f->getPath(), $extension_with_dot) . $suffix . $extension_with_dot;
+		$overwrite_file_object = ($is_overwrite) ? $f : false;
+		$new_fv = $fi->import($f->getPath(), $new_file_name, $overwrite_file_object);
 	}
 	
 	if (empty($error) && !($new_fv instanceof FileVersion)) {
 		$error = FileImporter::getErrorMessage($new_fv);
 	} else {
-		set_ocid($resp, $is_overwrite);
-		$ich->edit($new_fv->getPath(), $_POST['crop_x'], $_POST['crop_y'], $_POST['crop_w'], $_POST['crop_h'], $_POST['target_w'], $_POST['target_h']);
+//TODO: If no crop is selected and original image size is unchanged, set_ocid() fails when $fileVersion->getFile() is called [Fatal error: Call to a member function getFile() on a non-object]
+		set_ocid($new_fv, $is_overwrite);
+		$testval = $ich->edit($new_fv->getPath(), $_POST['crop_x'], $_POST['crop_y'], $_POST['crop_w'], $_POST['crop_h'], $_POST['target_w'], $_POST['target_h']);
 	}
 	
 	//Send json response

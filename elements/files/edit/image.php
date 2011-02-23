@@ -54,7 +54,7 @@ $ajax_url = $th->getToolsURL('crop', 'image_cropper');
 
 		<input type="submit" id="image_cropper_save" value="Save" />
     	<input type="hidden" id="image_cropper_fID" name="fID" value="<?php echo $fID; ?>" />
-		<input type="hidden" id="image_cropper_ocID" name="ocID" value="<?php echo $odID; ?>" />
+		<input type="hidden" id="image_cropper_ocID" name="ocID" value="<?php echo $ocID; ?>" />
 		<input type="hidden" id="image_cropper_ccm_token" name="ccm_token" value="<?php echo $valt->generate('upload'); ?>" />
 
 		<img id="image_cropper_save_warning" src="<?php echo BASE_URL.DIR_REL; ?>/packages/image_cropper/images/error.png" width="16" height="16" alt="Image quality will be degraded at these settings" style="display: none;" />

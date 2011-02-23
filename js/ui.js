@@ -176,7 +176,7 @@ function save(post_url) {
     var crop = ImageEditor.get_crop();
     var data = {
         'fID': $('#image_cropper_fID').val(),
-        'ocID': $('#image_cropper_odID').val(),
+        'ocID': $('#image_cropper_ocID').val(),
         'ccm_token': $('#image_cropper_ccm_token').val(),
         'override': $('#image_cropper_overwrite').is(':checked'),
         'crop_x': crop.x,
