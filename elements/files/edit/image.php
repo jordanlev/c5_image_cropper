@@ -6,12 +6,18 @@ $fp = new Permissions($f);
 if (!$fp->canWrite()) {
 	die(t("Access Denied."));
 }
+
 $fID = $f->getFileID();
+$ocID = isset($_POST['ocID']) ? $_POST['ocID'] : 0;
+$valt = Loader::helper('validation/token');
 
 $img_src = BASE_URL . $fv->getRelativePath();
 $img_width = $fv->getAttribute('width');
 $img_height = $fv->getAttribute('height');
 $img_dom_id = "cropbox{$fID}";
+
+$th = Loader::helper('concrete/urls'); 
+$ajax_url = $th->getToolsURL('crop', 'image_cropper');
 ?>
 
 <div id="image_cropper_controls_container">
@@ -43,9 +49,14 @@ $img_dom_id = "cropbox{$fID}";
 	</div>
 	
 	<div id="image_cropper_save_container">
-		<input type="checkbox" id="image_cropper_overwrite" />
+		<input type="checkbox" id="image_cropper_overwrite" name="overwrite" />
 		<label id="image_cropper_overwrite_label" for="image_cropper_overwrite">Overwrite</label>
+
 		<input type="submit" id="image_cropper_save" value="Save" />
+    	<input type="hidden" id="image_cropper_fID" name="fID" value="<?php echo $fID; ?>" />
+		<input type="hidden" id="image_cropper_ocID" name="ocID" value="<?php echo $odID; ?>" />
+		<input type="hidden" id="image_cropper_ccm_token" name="ccm_token" value="<?php echo $valt->generate('upload'); ?>" />
+
 		<img id="image_cropper_save_warning" src="<?php echo BASE_URL.DIR_REL; ?>/packages/image_cropper/images/error.png" width="16" height="16" alt="Image quality will be degraded at these settings" style="display: none;" />
 	</div>
 </div>
@@ -55,21 +66,18 @@ $img_dom_id = "cropbox{$fID}";
 </div>
 
 <script type="text/javascript">
-	//Bring in the required javascripts (in proper order, one after the other) if they haven't already been loaded
-	if (typeof ImageEditor == 'undefined') {
-		var js_path = '<?php echo BASE_URL.DIR_REL; ?>/packages/image_cropper/js';
-		$.getScript(js_path + '/jquery.Jcrop.js', function() {
-			$.getScript(js_path + '/image_editor.js', function() {
-				$.getScript(js_path + '/ui.js', function() {
-					ImageEditor.init($('#<?php echo $img_dom_id; ?>'), jcropOnChangeHandler);
-		 		});
-		 	});
-		 });
-	}
-
-	//When the window is closed, destroy the jcrop object (if it's still around)
-//TODO: TEST THAT THIS ACTUALLY WORKS! (That it ever gets triggered, AND that the memory is actually cleared when the function is called)
-	$(".ccm-dialog-close").click(function() {
-		ImageEditor.destroy();
-	});
+	//THIS DOESN'T WORK -- NOT SURE WHY:
+	// //Bring in the required javascripts (in proper order, one after the other) if they haven't already been loaded
+	// if (typeof ImageEditor == 'undefined') {
+	// 	var js_path = '<?php echo BASE_URL.DIR_REL; ?>/packages/image_cropper/js';
+	// 	$.getScript(js_path + '/jquery.Jcrop.js', function() {
+	// 		$.getScript(js_path + '/image_editor.js', function() {
+	// 			$.getScript(js_path + '/ui.js', function() {
+	// 				init_ui('<?php echo $img_dom_id; ?>', '<?php echo $ajax_url; ?>');
+	// 	 		});
+	// 	 	});
+	// 	 });
+	// }
+	
+	init_ui('<?php echo $img_dom_id; ?>', '<?php echo $ajax_url; ?>');
 </script>

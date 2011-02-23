@@ -1,5 +1,7 @@
 //Override this function in concrete's ccm.filemanager.js file.
-//We only need to change one line -- the link to edit a file now goes to our package tool instead of concrete tool -- also in that same line changed dialog height to 80%).
+//We only need to change one line -- the "edit" link
+// (we change the destination URL to go to our package tool instead of concrete tool,
+//  change dialog height to 80%, and add the ocID parameter).
 
 ccm_alActivateMenu = function(obj, e) {
 	
@@ -64,7 +66,7 @@ ccm_alActivateMenu = function(obj, e) {
 			html += '<li><a class="ccm-icon" id="menuDownload' + fID + '" target="' + ccm_alProcessorTarget + '" href="' + CCM_TOOLS_PATH + '/files/download?fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/design_small.png)">'+ ccmi18n_filemanager.download + '<\/span><\/a><\/li>';	
 		}
 		if ($(obj).attr('ccm-file-manager-can-edit') == '1') {
-			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="70%" dialog-title="' + ccmi18n_filemanager.edit + '" id="menuEdit' + fID + '" href="' + CCM_DISPATCHER_FILENAME + '/tools/packages/image_cropper/files/edit?fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/edit_small.png)">'+ ccmi18n_filemanager.edit + '<\/span><\/a><\/li>';
+			html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="90%" dialog-height="70%" dialog-title="' + ccmi18n_filemanager.edit + '" id="menuEdit' + fID + '" href="' + CCM_DISPATCHER_FILENAME + '/tools/packages/image_cropper/files/edit?fID=' + fID + '&ocID=' + CCM_CID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/edit_small.png)">'+ ccmi18n_filemanager.edit + '<\/span><\/a><\/li>';
 		}
 		html += '<li><a class="ccm-icon dialog-launch" dialog-modal="false" dialog-width="680" dialog-height="450" dialog-title="' + ccmi18n_filemanager.properties + '" id="menuProperties' + fID + '" href="' + CCM_TOOLS_PATH + '/files/properties?searchInstance=' + searchInstance + '&fID=' + fID + '"><span style="background-image: url(' + CCM_IMAGE_PATH + '/icons/wrench.png)">'+ ccmi18n_filemanager.properties + '<\/span><\/a><\/li>';
 		if ($(obj).attr('ccm-file-manager-can-replace') == '1') {

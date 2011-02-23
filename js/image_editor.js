@@ -149,7 +149,7 @@ var ImageEditor = {
         } else {
             throw new Error("Invalid 'locked_dimension' argument passed to max_allowable_locked_dimension()!");
         }
-    }
+    },
     
     //Given the current crop area and the passed-in width (or height), what is the height (or width)?
     // (Note that this returns the image's target width or height -- NOT the crop width or height).

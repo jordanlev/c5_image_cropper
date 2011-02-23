@@ -65,6 +65,7 @@ The ImageEditor object is directly responsible for the display of the image in t
 * Add a help icon that pops up instructions in a lightbox (or something like that)
 * Maybe move editing controls to BELOW the image -- the save button makes more sense down there, and the whole interace might make more sense that way if users are familiar with iPhoto.
 * Browser testing! (Developed in Firefox/Mac, so that's the only one I know works for now)
+* Figure out how to make $.getScript() work properly from elements/files/edit/image.php so we don't have to load all of the js on every page load in controller.php!
 
 Not as important...
 
@@ -73,3 +74,5 @@ Not as important...
 * Maybe set the zoom automatically when window is first loaded? (But maybe not because it's a good indication to people when their images are too freaking huge!)
 * Maybe have an "Auto-Fit" zoom option? (only applicable if image is larger than container div, not smaller -- Jcrop doesn't allow us to zoom larger than original).
 * Maybe add a feature where a dashboard setting indicates the default locked width or height when editor is first opened (so designer could set this to column width of their templates before handing off to client?). !NOTE: only apply the default if it's SMALLER than the original image dimension.
+* Improve efficiency during file save by writing the cropped/resized image to a temp location, then importing that back into the c5 filesystem (then delete temp file) -- currently we copy the file and then overwrite it with the cropped/resized image (so if we're operating on a very large file, it may be more resource-intensive than it needs to be)
+* Re-label "overwrite" checkbox to something less drastic (because we create a new file version, so larger version could be retrieved).

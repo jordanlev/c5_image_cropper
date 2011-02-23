@@ -34,6 +34,11 @@ class ImageCropperPackage extends Package {
 			$view->addHeaderItem($html->css(BASE_URL.DIR_REL.'/packages/image_cropper/css/image_cropper.css'), 'CONTROLLER');
 			$view->addHeaderItem($html->javascript(BASE_URL.DIR_REL.'/packages/image_cropper/js/ccm.filemanager.js'), 'CONTROLLER');
 			//Note that we passed the 'CONTROLLER' namespace to addHeaderItem() so that it adds our items AFTER the core items
+
+//TODO: MAKE $.getScript() WORK FROM elements/files/edit/image.php SO WE DON'T HAVE TO LOAD THESE ON EVERY PAGE!
+			$view->addHeaderItem($html->javascript(BASE_URL.DIR_REL.'/packages/image_cropper/js/jquery.Jcrop.js'), 'CONTROLLER');
+			$view->addHeaderItem($html->javascript(BASE_URL.DIR_REL.'/packages/image_cropper/js/image_editor.js'), 'CONTROLLER');
+			$view->addHeaderItem($html->javascript(BASE_URL.DIR_REL.'/packages/image_cropper/js/ui.js'), 'CONTROLLER');
 		}
 	}
 
