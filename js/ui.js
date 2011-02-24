@@ -5,7 +5,7 @@ var last_good_height;
 
 //All event handlers for image editor UI elements must be set inside this function that's called when the dialog loads.
 //If we don't delay execution like this, they would be executed before their html elements exist in the DOM!
-function init_ui(img_dom_id, save_post_url, searchInstance) {
+function init_ui(img_dom_id) {
     ImageEditor.init($('#'+img_dom_id), jcropOnChangeHandler);
     last_good_width = width_val();
     last_good_height = height_val();
@@ -124,7 +124,7 @@ function init_ui(img_dom_id, save_post_url, searchInstance) {
 
 /** Other Events **/
     $('#image_cropper_save').click(function() {
-        save(save_post_url, searchInstance);
+        save();
     });
 
     $('#image_cropper_zoom').change(function() {
@@ -172,7 +172,7 @@ function toggle_save_warning() {
 	$('#image_cropper_save_warning').toggle(ImageEditor.degraded(width_val(), height_val()));
 }
 
-function save(post_url, searchInstance) {
+function save() {
     var crop = ImageEditor.get_crop();
     var data = {
         'fID': $('#image_cropper_fID').val(),
@@ -186,6 +186,9 @@ function save(post_url, searchInstance) {
         'target_w': width_val(),
         'target_h': height_val()
     };
+    
+    var searchInstance = $('#image_cropper_searchInstance').val();
+    var post_url = $('#image_cropper_post_url').val();
     
     $.post(post_url, data, function(resp) {
 		var r = eval('(' + resp + ')');

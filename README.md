@@ -57,7 +57,6 @@ So the basic chain of command is that the editor window opens, loads the `elemen
 The ImageEditor object is directly responsible for the display of the image in the window (including zooming and crop area selection), while the front-end code is directly responsible for the display and input of all other controls in the window. The front-end code never interacts with the displayed image directly -- rather, it asks the ImageEditor object to do things which in turn may or may not affect the displayed image or crop selection area. Similarly, the ImageEditor object never interacts with the other controls in the window directly -- rather, it responds to function calls made by the front-end code (or it calls an event handler in the front-end code) which in turn may or may not affect the value of the controls.
 
 #TODO
-* File Manager isn't updating to show new image after save
 * File properties are not getting copied over to new image (especially title, so file manager list looks weird)
 * Make it so editing an image from an image control (in a block edit, not in the file manager) updates said image control [maybe ask Andrew about this?]
 * Do testing with lots of different scenarios -- make sure height/width numbers always change as appropriate, crop rectangle gets selected/deselected/resized as appropriate, and the actual cropped/resized image comes out the right way
@@ -86,3 +85,4 @@ Not as important...
 * Re-label "overwrite" checkbox to something less drastic (because we create a new file version, so larger version could be retrieved).
 * Make file renaming more clever in tools/crop.php so if you resize an image that already has "_400x200" appended to its name, you don't wind up with "_400x200_350x125".
 * Width/Height textboxes need to allow for a more seamless "trial and error" flow -- when window first comes up, hilight the entire contents of the width field. After enter, re-highlight it so it's ready for more typing. Make sure tab stops are set appropriately. Add keyboard shortcuts for each control. Etc.
+* Refactor save function in ui.js so it does an .ajaxSubmit (so it can automatically pull values from hidden form fields, as well as the form action). Have to figure out how to also add our own post data (for crop x/y/w/h) to the form fields though.

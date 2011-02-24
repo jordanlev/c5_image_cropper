@@ -8,8 +8,8 @@ if (!$fp->canWrite()) {
 }
 
 $fID = $f->getFileID();
-$ocID = isset($_POST['ocID']) ? $_POST['ocID'] : 0;
-$searchInstance = isset($_POST['searchInstance']) ? $_POST['searchInstance'] : '';
+$ocID = isset($_REQUEST['ocID']) ? $_REQUEST['ocID'] : 0;
+$searchInstance = isset($_REQUEST['searchInstance']) ? $_REQUEST['searchInstance'] : '';
 $valt = Loader::helper('validation/token');
 
 $img_src = BASE_URL . $fv->getRelativePath();
@@ -52,11 +52,13 @@ $ajax_url = $th->getToolsURL('crop', 'image_cropper');
 	<div id="image_cropper_save_container">
 		<input type="checkbox" id="image_cropper_overwrite" name="overwrite" />
 		<label id="image_cropper_overwrite_label" for="image_cropper_overwrite">Overwrite</label>
-
+	
 		<input type="submit" id="image_cropper_save" value="Save" />
     	<input type="hidden" id="image_cropper_fID" name="fID" value="<?php echo $fID; ?>" />
 		<input type="hidden" id="image_cropper_ocID" name="ocID" value="<?php echo $ocID; ?>" />
 		<input type="hidden" id="image_cropper_ccm_token" name="ccm_token" value="<?php echo $valt->generate('upload'); ?>" />
+		<input type="hidden" id="image_cropper_searchInstance" name="searchInstance" value="<?php echo $searchInstance; ?>" />
+		<input type="hidden" id="image_cropper_post_url" name="post_url" value="<?php echo $ajax_url; ?>">
 
 		<img id="image_cropper_save_warning" src="<?php echo BASE_URL.DIR_REL; ?>/packages/image_cropper/images/error.png" width="16" height="16" alt="Image quality will be degraded at these settings" style="display: none;" />
 	</div>
@@ -80,5 +82,5 @@ $ajax_url = $th->getToolsURL('crop', 'image_cropper');
 	// 	 });
 	// }
 	
-	init_ui('<?php echo $img_dom_id; ?>', '<?php echo $ajax_url; ?>', '<?php echo $searchInstance; ?>');
+	init_ui('<?php echo $img_dom_id; ?>');
 </script>
