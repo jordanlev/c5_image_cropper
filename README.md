@@ -1,6 +1,8 @@
 # What is this?
 This is a package for the Concrete5 CMS ( http://concrete5.org ) which replaces the built-in functionality of the "Edit" menu item with a lightweight javascript image editor which allows you to crop and resize the image without having to load the external "Piknik" service.
 
+[NOTE: THIS PACKAGE IS CURRENTLY IN DEVELOPMENT -- IT IS NOT INTENDED FOR GENERAL USE YET!]
+
 #Why?
 I don't like how choosing "Edit" from the popup menu when you click on an image in the file manager tries to connect you to the Piknik online service (and I say "tries" because I've never actually gotten it to work for me, although plenty of other people swear they have so it must just be me). Even if it did work, I still don't need such heavyweight functionality on my website. But being able to quickly and easily crop images after uploading them would be *very* useful to me -- both to myself and to non-technical users who sometimes don't understand that uploading an image directly from your camera without resizing it first results in HUGE file sizes and slow page loads. With this image editor, it becomes feasible to instruct my clients (the people managing the sites I build) to "click Edit, type 600 into the Width box, crop if you want, then click save".
 
@@ -13,7 +15,7 @@ I don't like how choosing "Edit" from the popup menu when you click on an image 
 6. Log into your site, go to Dashboard -> Add Functionality, then click the "Install" button next to "Image Cropper".
 
 # Usage Instructions (for site editors)
-[NOTE: THIS PACKAGE IS CURRENTLY IN DEVELOPMENT -- SAVING FUNCTIONALITY HAS NOT YET BEEN IMPLEMENTED! YOU CAN TEST THIS OUT AND SEE HOW THE INTERFACE WORKS BUT YOU WILL NOT BE ABLE TO SAVE YOUR CROPPED OR RESIZED IMAGES YET!]
+[NOTE: THIS PACKAGE IS CURRENTLY IN DEVELOPMENT -- IT IS NOT INTENDED FOR GENERAL USE YET!]
 
 To bring up the image editor, click on an image thumbnail from the file manager (or from add/edit dialog of any block which allows for image selection), then choose "Edit" from the popup menu.
 
@@ -42,7 +44,7 @@ There are three different things that the code needs to do:
 
 1. Hijack the "Edit" menu item so that our own image editor window is loaded instead of the Piknik service.
 2. Present the image editor to the user and respond to user interaction.
-3. Saving the resized/cropped image back to the file system [NOT YET IMPLEMENTED!]
+3. Saving the resized/cropped image back to the file system
 
 The three files `controller.php`, `js/ccm.filemanager.js`, and `tools/files/edit.php` are responsible for the first task. They all involve fairly simple modifications to core concrete5 behavior (see comments at the top of those files for a little more detail), and require no further mention.
 
@@ -55,6 +57,13 @@ So the basic chain of command is that the editor window opens, loads the `elemen
 The ImageEditor object is directly responsible for the display of the image in the window (including zooming and crop area selection), while the front-end code is directly responsible for the display and input of all other controls in the window. The front-end code never interacts with the displayed image directly -- rather, it asks the ImageEditor object to do things which in turn may or may not affect the displayed image or crop selection area. Similarly, the ImageEditor object never interacts with the other controls in the window directly -- rather, it responds to function calls made by the front-end code (or it calls an event handler in the front-end code) which in turn may or may not affect the value of the controls.
 
 #TODO
+* File Manager isn't updating to show new image after save
+* File properties are not getting copied over to new image (especially title, so file manager list looks weird)
+* Make it so editing an image from an image control (in a block edit, not in the file manager) updates said image control [maybe ask Andrew about this?]
+* Do testing with lots of different scenarios -- make sure height/width numbers always change as appropriate, crop rectangle gets selected/deselected/resized as appropriate, and the actual cropped/resized image comes out the right way
+    * Specifically: select a crop area, then unlock width -- it doesn't change to appropriate # (until crop rect is dragged again)
+* Show spinner while saving
+* Fix bug where calling $fileVersion->getFile() in tools/crop.php's set_ocid() function fails if no crop and no resize is selected by user.
 * In `$('#image_cropper_width_input').change(function() { ... });` handler (in `js/ui.js`), change the alert message so it uses new `ImageEditor.max_allowable_locked_dimension('width')` function to offer useful details to user. Also figure out what suggestions to give (increate/decrease crop area? width or height? increase/decrease other number?). When you figure it out, copy the change down to height handler as well.
 * Fix the thing where clicking on the icon immediately shows the other hover (so wait until first OUT event after switching to put the :hover state on it)
 * Add yellow fade hilite to display number when it's changed by a locked dimension change
@@ -64,7 +73,7 @@ The ImageEditor object is directly responsible for the display of the image in t
 * Maybe move editing controls to BELOW the image -- the save button makes more sense down there, and the whole interace might make more sense that way if users are familiar with iPhoto.
 * Browser testing! (Developed in Firefox/Mac, so that's the only one I know works for now)
 * Figure out how to make $.getScript() work properly from elements/files/edit/image.php so we don't have to load all of the js on every page load in controller.php!
-* Fix bug where calling $fileVersion->getFile() in tools/crop.php's set_ocid() function fails if no crop and no resize is selected by user.
+* Test the the 2 calls to ImageEditor.destroy() (in ui.js) actually work -- are they triggered at the right time? Do they actually clear out whatever memory they were using? (Does it even make a difference?)
 
 Not as important...
 
@@ -76,3 +85,4 @@ Not as important...
 * Improve efficiency during file save by writing the cropped/resized image to a temp location, then importing that back into the c5 filesystem (then delete temp file) -- currently we copy the file and then overwrite it with the cropped/resized image (so if we're operating on a very large file, it may be more resource-intensive than it needs to be)
 * Re-label "overwrite" checkbox to something less drastic (because we create a new file version, so larger version could be retrieved).
 * Make file renaming more clever in tools/crop.php so if you resize an image that already has "_400x200" appended to its name, you don't wind up with "_400x200_350x125".
+* Width/Height textboxes need to allow for a more seamless "trial and error" flow -- when window first comes up, hilight the entire contents of the width field. After enter, re-highlight it so it's ready for more typing. Make sure tab stops are set appropriately. Add keyboard shortcuts for each control. Etc.

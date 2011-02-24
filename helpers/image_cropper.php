@@ -4,7 +4,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class ImageCropperHelper {
 
 	public function edit($path, $crop_x, $crop_y, $crop_w, $crop_h, $target_w, $target_h) {
-		$imageSize = @getimagesize($originalPath);
+		$imageSize = @getimagesize($path);
 		$img_type = $imageSize[2];
 		
 		//create "canvas" to put new resized and/or cropped image into

@@ -44,7 +44,11 @@ if (isset($_POST['fID'])) {
 	} else {
 //TODO: If no crop is selected and original image size is unchanged, set_ocid() fails when $fileVersion->getFile() is called [Fatal error: Call to a member function getFile() on a non-object]
 		set_ocid($new_fv, $is_overwrite);
-		$testval = $ich->edit($new_fv->getPath(), $_POST['crop_x'], $_POST['crop_y'], $_POST['crop_w'], $_POST['crop_h'], $_POST['target_w'], $_POST['target_h']);
+		$ich->edit($new_fv->getPath(), $_POST['crop_x'], $_POST['crop_y'], $_POST['crop_w'], $_POST['crop_h'], $_POST['target_w'], $_POST['target_h']);
+		$new_fv->refreshAttributes();
+		if ($is_overwrite) {
+			$f->refreshCache();
+		}
 	}
 	
 	//Send json response

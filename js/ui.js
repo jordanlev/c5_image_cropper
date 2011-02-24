@@ -2,8 +2,10 @@
 
 var last_good_width;
 var last_good_height;
-	
-function init_ui(img_dom_id, save_post_url) {
+
+//All event handlers for image editor UI elements must be set inside this function that's called when the dialog loads.
+//If we don't delay execution like this, they would be executed before their html elements exist in the DOM!
+function init_ui(img_dom_id, save_post_url, searchInstance) {
     ImageEditor.init($('#'+img_dom_id), jcropOnChangeHandler);
     last_good_width = width_val();
     last_good_height = height_val();
@@ -122,17 +124,15 @@ function init_ui(img_dom_id, save_post_url) {
 
 /** Other Events **/
     $('#image_cropper_save').click(function() {
-        save(save_post_url);
+        save(save_post_url, searchInstance);
     });
 
     $('#image_cropper_zoom').change(function() {
         ImageEditor.zoom($(this).val());
     });
 
-	//When the window is closed, destroy the jcrop object (if it's still around)
-//TODO: TEST THAT THIS ACTUALLY WORKS! (That it ever gets triggered, AND that the memory is actually cleared when the function is called)
 	$(".ccm-dialog-close").click(function() {
-		ImageEditor.destroy();
+        ImageEditor.destroy();
 	});
 
 }
@@ -172,7 +172,7 @@ function toggle_save_warning() {
 	$('#image_cropper_save_warning').toggle(ImageEditor.degraded(width_val(), height_val()));
 }
 
-function save(post_url) {
+function save(post_url, searchInstance) {
     var crop = ImageEditor.get_crop();
     var data = {
         'fID': $('#image_cropper_fID').val(),
@@ -187,8 +187,19 @@ function save(post_url) {
         'target_h': height_val()
     };
     
-    $.post(post_url, data, function(response) {
-        alert("Data Loaded: " + response);
+    $.post(post_url, data, function(resp) {
+		var r = eval('(' + resp + ')');
+        if (r.error == 1) {
+            ccmAlert.notice(ccmi18n.error, r.message);		
+	        return false;
+		} else if (!r.fID) {
+            ccmAlert.notice(ccmi18n.error, 'Error: No file ID found!');
+	        return false;
+	    } else {
+	        ImageEditor.destroy();
+    		jQuery.fn.dialog.closeTop();
+			ccm_alRefresh([r.fID], searchInstance);
+		}
     });
 }
 

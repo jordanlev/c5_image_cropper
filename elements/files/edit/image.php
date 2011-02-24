@@ -9,6 +9,7 @@ if (!$fp->canWrite()) {
 
 $fID = $f->getFileID();
 $ocID = isset($_POST['ocID']) ? $_POST['ocID'] : 0;
+$searchInstance = isset($_POST['searchInstance']) ? $_POST['searchInstance'] : '';
 $valt = Loader::helper('validation/token');
 
 $img_src = BASE_URL . $fv->getRelativePath();
@@ -79,5 +80,5 @@ $ajax_url = $th->getToolsURL('crop', 'image_cropper');
 	// 	 });
 	// }
 	
-	init_ui('<?php echo $img_dom_id; ?>', '<?php echo $ajax_url; ?>');
+	init_ui('<?php echo $img_dom_id; ?>', '<?php echo $ajax_url; ?>', '<?php echo $searchInstance; ?>');
 </script>
